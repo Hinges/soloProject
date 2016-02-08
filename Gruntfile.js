@@ -5,21 +5,12 @@ module.exports = function(grunt) {
         uglify: {
             my_target: {
                 files: {
-                    'server/public/assets/scripts/clientLogin.min.js': ['client/clientLogin.js'],
-                    'server/public/assets/scripts/clientUser.min.js': ['client/clientUser.js'],
                     'server/public/assets/scripts/client.min.js': ['client/client.js']
                 }
             }
         },
         watch: {
             scripts: {
-                files: ['client/clientLogin.js'],
-                tasks: ['uglify'],
-                options: {
-                    spawn: false
-                }
-            },
-            another: {
                 files: ['client/client.js'],
                 tasks: ['uglify'],
                 options: {

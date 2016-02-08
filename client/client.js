@@ -55,3 +55,7 @@ app.controller('adminController', ['$scope', '$http', '$location', function($sco
 app.controller('childController', ['$scope', '$http', '$location', function($scope, $http, $location){
 
 }]);
+
+app.factory('DataService', function($http){
+
+});

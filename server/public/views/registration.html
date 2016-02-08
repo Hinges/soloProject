@@ -1,22 +1,22 @@
 <div class="mainForm">
     <h1>Registration</h1>
-    <form action="/registerAdmin" method="post">
-        <div>
+    <form class="loginForm" action="/registerAdmin" method="post">
+        <div class="login-input">
             <p>Username:</p>
-            <input type="text" name="username" placeholder="e.g. Ron, Jane, Nick32" required/>
+            <input type="text" name="username" placeholder="e.g. nickJr" required/>
         </div>
 
-        <div>
+        <div class="login-input">
             <p>Password:</p>
-            <input type="password" name="password" placeholder="e.g. bunny33, password1234, 1111" required/>
+            <input type="password" name="password" placeholder="e.g. password1234" required/>
         </div>
-        <div>
+        <div class="login-input">
             <p>Email Address</p>
             <input type="text" name="email_address" placeholder="e.g. donknotts@yahoo.com"/>
         </div>
-        <div>
-            <input type="submit">
-            <a href="/login">Cancel</a>
+        <div class="login-buttons">
+            <input class="login-submit" type="submit">
+            <a class="login-button" href="/login">Cancel</a>
         </div>
     </form>
 </div>

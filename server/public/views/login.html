@@ -1,19 +1,19 @@
 <div class="mainForm">
-    <h1>Login</h1>
+    <h1 class="title">Chore More</h1>
     <div class="loginForm">
-       <div class="login-username-admin">
-        <p>Username:</p>
-        <input type="text" ng-model="data.username"placeholder="Username"/>
-       </div>
-
-    <div class="login-password-admin">
-        <p>Password:</p>
-        <input type="password" ng-model="data.password" placeholder="Password"/>
-    </div>
-    <div class="login-buttons">
-        <button ng-click="submitData()">Log In</button>
-        <a href="/registration">Register</a>
-    </div>
+        <h2>Login</h2>
+        <div class="login-input">
+            <p>Username:</p>
+            <input type="text" ng-model="data.username"placeholder="Username" required/>
+        </div>
+        <div class="login-input">
+            <p>Password:</p>
+            <input type="password" ng-model="data.password" placeholder="Password"required/>
+        </div>
+        <div class="login-buttons">
+            <button class="login-button" ng-click="submitData()">Log In</button>
+            <a class="login-button" href="/registration">Register</a>
+        </div>
         <p ng-show="update">Sorry but your username or password did not match</p>
     </div>
 </div>

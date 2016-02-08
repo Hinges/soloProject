@@ -1,3 +1,53 @@
-<div>
-    <h1>userAdmin test hit</h1>
+<body>
+<header>
+    <h1>Admin</h1>
+</header>
+<div class="mainContent">
+    <article class="article-column-1">
+        <div class="user-info-box">
+            <h2>User Info:</h2>
+            <!--=====scope user====-->
+            <br/>
+            <h3>Chores Needed</h3>
+            <!--=====scope total task====-->
+            <br/>
+            <h3>Chores In Progress</h3>
+            <!--====scope total in progress====-->
+            <br/>
+            <h3>Total Urgent Tasks</h3>
+            <!--====scope total urgent tasks====-->
+            <br/>
+            <h3>Total Money Earned</h3>
+            <!--====scope total money earned====-->
+        </div>
+    </article>
+    <article class="main-column">
+        <div class="task-box">
+        <h2>Task</h2>
+        </div>
+        <div class="task-box">
+        <h2>In Progress</h2>
+        </div>
+        <div class="task-box">
+        <h2>Submitted</h2>
+        </div>
+    </article>
+    <article class="article-column-3">
+        <div class="task-creation">
+            <h2>Task Creation</h2>
+            <input type="text" ng-model="newTask.username" placeholder="Username" required/>
+            <input type="text" ng-model="newTask.task" placeholder="Name Of Task" required/>
+            <input type="text" ng-model="newTask.money" placeholder="Money Amount"/>
+            <button class="task-creation-btn" ng-click="createTask()">Create Task</button>
+        </div>
+        <br/>
+        <div class="user-creation">
+            <h2>User Creation</h2>
+            <input type="text" ng-model="newUser.username" placeholder="Username" required/>
+            <input type="text" ng-model="newUser.task" placeholder="Password" required/>
+            <button class="user-creation-btn" ng-click="createUser()">Create Sub User</button>
+        </div>
+    </article>
+
 </div>
+</body>
