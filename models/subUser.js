@@ -1,6 +1,6 @@
 
 var mongoose = require('mongoose');
-var TasksSchema = require('../models/task');
+var TasksSchema = require('./task').schema;
 var Schema = mongoose.Schema;
 
 //===================================
@@ -10,17 +10,17 @@ var SubUserSchema = new Schema({
     password: String,
     assigned_task: [TasksSchema],
     role: String,
-    urgent_task: Number
+    urgent_task: Number,
+    total_money: Number
 });
 
 //===================================
 //creates model to be used by database
 
-var SubUserAssignment = mongoose.model('SubUser', SubUserSchema);
 //===================================
 //exports module for use globally
 
 //module.exports = SubUserAssignment;
 
-exports.model = SubUserAssignment;
-exports.schema = SubUserSchema;
+module.exports = mongoose.model('SubUser', SubUserSchema);
+

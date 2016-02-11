@@ -16,9 +16,6 @@ router.get('/', function(request, response){
     response.sendFile(path.join(__dirname, '../public/views/index.html'));
 });
 
-router.get('/userIndex', function(request, response){
-    response.sendFile(path.join(__dirname, '../public/views/userIndex.html'));
-});
 //===================================
 //All gets that use angular routes
 
@@ -41,26 +38,22 @@ router.get('/userChild', function(request, response){
 router.get('/success', function(request, response){
     request.user.password = 'password is secret SORRY!!!!';
     response.send(request.user);
+    console.log('success');
 });
 
 router.get('/failure', function(request, response){
     response.send('failure');
+    console.log('failure');
 });
 
-router.get('/userlogin/:id', function(request, response){
-
-    User.find({_id: request.params.id}, function (err, assignments) {
-        if (err) {
-            console.log(err);
-        } else {
-            response.send(assignments);
-        }
-    });
-});
 //===================================
 //post calls
 
-
+router.post('/updateUser', function(request, response){
+    User.findOne({_id:request.user._id}, function(err, update) {
+        response.send(update);
+    });
+});
 
 
 
@@ -73,10 +66,30 @@ router.post('/', passport.authenticate('local', {
 //Model in database creation
 
 router.post('/createTask', function(request, response){
+    console.log('user register hit with body', request.body);
     Task.create({
         task_name: request.body.taskName,
         task_money: request.body.taskMoney,
-        task_priority: request.body.taskPriority
+        task_priority: 1,
+        task_urgent: false
+    }, function(err, task){
+        if(err) {
+            next(err);
+        }
+        var data = JSON.parse(request.body.selectedUser);
+        console.log(data._id);
+
+        SubUser.findById({_id:data._id}, function(err, subuser){
+        //    User.find({_id:data._id}, function(err, subuser){
+                console.log('this is the subuser', subuser);
+                subuser.assigned_task.push(task);
+
+            subuser.save(function(err) {
+                if(err) throw err;
+            })
+
+        });
+        response.sendStatus(200);
     })
 });
 router.post('/registerAdmin', function(request, response){
@@ -91,24 +104,39 @@ router.post('/registerAdmin', function(request, response){
         if(err) {
             next(err);
         } else {
-            response.redirect('/')
+            response.redirect('/');
         }
     });
 });
 
 router.post('/registerUser', function(request, response){
+    console.log('user register hit', request.body);
+    console.log('current user', request.user);
     SubUser.create({
         username: request.body.username,
         password: request.body.password,
         assigned_task: [],
         role: 'user',
-        urgent_task: 0
-    }, function(err, post){
+        urgent_task: 0,
+        total_money: 0
+    }, function(err, subuser){
         if(err) {
             next(err);
-        } else {
-            response.redirect('/userIndex')
         }
+        User.findOne({_id:request.user._id}, function(err, user){
+
+            console.log('this is the user', user);
+            console.log('this is the subuser', subuser);
+
+
+            user.sub_users.push(subuser);
+
+            user.save(function(err) {
+                if(err) throw err;
+            })
+
+        });
+        response.send(200);
     });
 });
 //===================================

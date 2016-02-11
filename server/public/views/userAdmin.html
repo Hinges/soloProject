@@ -1,53 +1,67 @@
 <body>
 <header>
-    <h1>Admin</h1>
+    <h1>Chore More</h1>
 </header>
 <div class="mainContent">
-    <article class="article-column-1">
+    <section class="article-column-1">
+        <div class="user-selection">
+            <h3>Choose a User</h3>
+            <select ng-model="newTask.selectedUser" ng-change="currentSubuserFunc()">
+                <option ng-repeat="item in items" value="{{item}}">{{item.username}}</option>
+            </select>
+        </div>
         <div class="user-info-box">
             <h2>User Info:</h2>
-            <!--=====scope user====-->
+            {{currentSubuser.username}}
             <br/>
             <h3>Chores Needed</h3>
-            <!--=====scope total task====-->
+            {{currentSubuser.assigned_task}}
             <br/>
             <h3>Chores In Progress</h3>
-            <!--====scope total in progress====-->
+            {{currentSubuser._id}}
             <br/>
             <h3>Total Urgent Tasks</h3>
-            <!--====scope total urgent tasks====-->
+            {{currentSubuser.urgent_task}}
             <br/>
             <h3>Total Money Earned</h3>
             <!--====scope total money earned====-->
         </div>
-    </article>
-    <article class="main-column">
+    </section>
+    <section class="main-column">
         <div class="task-box">
         <h2>Task</h2>
+            <div class="taskContainer1" ng-repeat="userTask in userTasks | filter:{userTask:{task_priority: 1}}">
+
+            </div>
         </div>
         <div class="task-box">
         <h2>In Progress</h2>
+            <div class="taskContainer2" ng-repeat="userTask in userTasks | filter:{userTask:{task_priority: 2}}">
+
+            </div>
         </div>
         <div class="task-box">
         <h2>Submitted</h2>
+            <div class="taskContainer3" ng-repeat="userTask in userTasks | filter:{userTask:{task_priority: 3}}">
+
+            </div>
         </div>
-    </article>
-    <article class="article-column-3">
+    </section>
+    <section class="article-column-3">
         <div class="task-creation">
             <h2>Task Creation</h2>
-            <input type="text" ng-model="newTask.username" placeholder="Username" required/>
-            <input type="text" ng-model="newTask.task" placeholder="Name Of Task" required/>
-            <input type="text" ng-model="newTask.money" placeholder="Money Amount"/>
+            <input type="text" ng-model="newTask.taskName" placeholder="Name Of Task" required/>
+            <input type="text" ng-model="newTask.taskMoney" placeholder="Money Amount"/>
             <button class="task-creation-btn" ng-click="createTask()">Create Task</button>
         </div>
         <br/>
         <div class="user-creation">
             <h2>User Creation</h2>
             <input type="text" ng-model="newUser.username" placeholder="Username" required/>
-            <input type="text" ng-model="newUser.task" placeholder="Password" required/>
+            <input type="text" ng-model="newUser.password" placeholder="Password" required/>
             <button class="user-creation-btn" ng-click="createUser()">Create Sub User</button>
         </div>
-    </article>
+    </section>
 
 </div>
 </body>

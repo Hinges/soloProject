@@ -3,7 +3,7 @@
 //===================================
 
 var mongoose = require('mongoose');
-var SubUserSchema = require('../models/subUser').schema;
+var SubUserSchema = require('./subUser').schema;
 var Schema = mongoose.Schema;
 
 //===================================
@@ -20,8 +20,7 @@ var UserSchema = new Schema({
 //===================================
 //creates model to be used by database
 
-var UserAssignment = mongoose.model('User', UserSchema);
 //===================================
 //exports module for use globally
+module.exports = mongoose.model('User', UserSchema);
 
-module.exports = UserAssignment;

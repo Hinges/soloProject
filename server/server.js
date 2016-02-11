@@ -10,8 +10,8 @@ var session = require('express-session');
 var path = require('path');
 var localStrategy = require('passport-local').Strategy;
 var index = require('./routes/index');
-var userIndex = require('./routes/index');
 var User = require('../models/user');
+var SubUser = require('../models/subUser');
 
 var app = express();
 //=================================================
@@ -31,6 +31,7 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session());
 app.use('/', index);
+app.use('/admin', index);
 //=================================================
 //Starting connection to Mongo Database either best choice or local host
 
@@ -58,8 +59,6 @@ passport.deserializeUser(function(id, done){
             done(err);
         }
 
-        console.log('Deserialized user', user);
-
         done(null, user);
     })
 });
@@ -71,13 +70,22 @@ passport.use('local', new localStrategy({
             if(err){
                 console.log(err);
             }
-
+          //=================================
             if(!user){
-                return done(null, false);
-            }
 
+                SubUser.findOne({username: username}, function(err, user){
+                    if(err){
+                        console.log(err);
+                    }
+                    //=========================
+                    if(!user) {
+                        return done(null, false);
+                    } else {
+                        return done(null, user);
+                    }
+                });
+            }
             if(user.password === password){
-                console.log('valid password');
                 return done(null, user);
             }
             return done(null, false);
