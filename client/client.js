@@ -46,45 +46,52 @@ app.controller('registerController', ['$scope', '$http', '$location', function($
 app.controller('adminController', ['$scope', '$http', '$location', 'DataService', function($scope, $http, $location, DataService){
     $scope.userData = DataService.userData;
     $scope.items = DataService.userData.server.data.sub_users;
-    $scope.userTasks = DataService.userData.server.data.sub_users.assigned_task;
+
+
+
     $scope.newTask = {};
     $scope.newUser = {};
+
 //========================================
     //
     $scope.currentSubuserFunc = function(){
-       $scope.currentSubuser = JSON.parse($scope.newTask.selectedUser);
-        console.log($scope.currentSubuser);
+       $scope.currentSubuser = $scope.newTask.selectedUser;
+        $scope.userTasks = $scope.newTask.selectedUser.assigned_task;
     };
 //========================================
     //This is to create new subuser then clear fields and call change
     $scope.createUser = function(){
         $http.post('/registerUser', $scope.newUser).then(function(response) {
-            console.log(response.data);
             $scope.newUser = {};
-            //$scope.currentSubuserFunc();
         });
     };
 //========================================
     //This is to create new task then clear fields and call change
     $scope.createTask = function(){
-        console.log($scope.newtask);
+        console.log('This is scope newtask',$scope.newTask);
         $http.post('/createTask', $scope.newTask).then(function(response) {
-            console.log(response.data);
+            $scope.userData = response;
             var dataHolder = $scope.newTask.selectedUser;
             $scope.newTask = {};
             $scope.newTask.selectedUser = dataHolder;
-            //$scope.currentSubuserFunc();
+
         });
     };
-}]);
+    $scope.updatePriority = function(userTask){
+        var updateObject = {
+            scopeData: $scope.newTask.selectedUser,
+            userTaskData: userTask
+        };
+        $http.post('/updateUser', updateObject).then(function(response){
+            //updateMainUser();
+            console.log('Adsadadsad', response);
+            DataService.makeLoginRequest(response);
+            console.log($scope.items);
 
-    //$scope.updateUser = function(){
-    //    $http.post('/updateUser', $scope.userData).then(function(response){
-    //        console.log(response);
-    //        //$scope.userData = (response);
-    //
-    //    });
-    //};
+        });
+    };
+
+}]);
 
 app.controller('childController', ['$scope', '$http', '$location', function($scope, $http, $location){
 
@@ -96,7 +103,8 @@ app.factory('DataService', ['$http', function($http){
 
     var makeLoginRequest = function(data){
             userData.server = data;
-            console.log(userData.server);
+            console.log('service data', data);
+
         };
 
 

@@ -5,6 +5,7 @@
 var express = require('express');
 var passport = require('passport');
 var path = require('path');
+var mongoose = require('mongoose');
 var router = express.Router();
 var User = require('../../models/user');
 var SubUser = require('../../models/subUser');
@@ -50,12 +51,34 @@ router.get('/failure', function(request, response){
 //post calls
 
 router.post('/updateUser', function(request, response){
-    User.findOne({_id:request.user._id}, function(err, update) {
+    User.findOne({'sub_users._id':request.body.scopeData._id}, function(err, update) {
+        var subTaskFind = update.sub_users.id(request.body.scopeData._id);
+        var newSubTaskFind = subTaskFind.assigned_task.id(request.body.userTaskData._id);
+        console.log('this is the newest variable', newSubTaskFind);
+        if(newSubTaskFind.task_priority === 1){
+            newSubTaskFind.task_priority = 2;
+        }
+        else if(newSubTaskFind.task_priority === 2){
+            newSubTaskFind.task_priority = 3;
+        }
+        else if(newSubTaskFind.task_priority === 3){
+            newSubTaskFind.task_priority = 1;
+        }
+        update.save(function(err, user) {
+            if(err) throw err;
+            console.log(user);
+        });
         response.send(update);
     });
+
 });
 
-
+router.post('/updateMainUser', function(request, response){
+    console.log('request', request.user._id);
+    User.findOne({'_id':request.user._id}, function(err, update) {
+        response.send(update);
+        });
+});
 
 //===================================
 //post call for passport authentication
@@ -66,7 +89,6 @@ router.post('/', passport.authenticate('local', {
 //Model in database creation
 
 router.post('/createTask', function(request, response){
-    console.log('user register hit with body', request.body);
     Task.create({
         task_name: request.body.taskName,
         task_money: request.body.taskMoney,
@@ -76,21 +98,19 @@ router.post('/createTask', function(request, response){
         if(err) {
             next(err);
         }
-        var data = JSON.parse(request.body.selectedUser);
-        console.log(data._id);
-
-        SubUser.findById({_id:data._id}, function(err, subuser){
-        //    User.find({_id:data._id}, function(err, subuser){
-                console.log('this is the subuser', subuser);
-                subuser.assigned_task.push(task);
-
-            subuser.save(function(err) {
-                if(err) throw err;
-            })
-
-        });
-        response.sendStatus(200);
-    })
+        console.log('server body', request.body.selectedUser);
+        var data = request.body.selectedUser;
+        User.findOne({'sub_users._id':data._id}, function(err, user){
+            console.log('this is the user', user);
+            var subDocFind = user.sub_users.id(data._id);
+            console.log('asldkfja;skdjf', subDocFind.assigned_task);
+                subDocFind.assigned_task.push(task);
+                user.save(function (err) {
+                    if (err) throw err;
+                });
+                response.send(user);
+            });
+    });
 });
 router.post('/registerAdmin', function(request, response){
     User.create({
@@ -104,7 +124,7 @@ router.post('/registerAdmin', function(request, response){
         if(err) {
             next(err);
         } else {
-            response.redirect('/');
+            response.send(user);
         }
     });
 });
@@ -134,9 +154,9 @@ router.post('/registerUser', function(request, response){
             user.save(function(err) {
                 if(err) throw err;
             })
+            response.send(user);
 
         });
-        response.send(200);
     });
 });
 //===================================

@@ -6,22 +6,22 @@
     <section class="article-column-1">
         <div class="user-selection">
             <h3>Choose a User</h3>
-            <select ng-model="newTask.selectedUser" ng-change="currentSubuserFunc()">
-                <option ng-repeat="item in items" value="{{item}}">{{item.username}}</option>
+            <select ng-model="newTask.selectedUser" ng-options="item.username for item in items" ng-change="currentSubuserFunc()">
+                <!--<option ng-repeat="item in items" ng-value="item">{{item.username}}</option>-->
             </select>
         </div>
         <div class="user-info-box">
             <h2>User Info:</h2>
             {{currentSubuser.username}}
             <br/>
-            <h3>Chores Needed</h3>
-            {{currentSubuser.assigned_task}}
-            <br/>
-            <h3>Chores In Progress</h3>
-            {{currentSubuser._id}}
+            <h3>Total Chores</h3>
+            {{currentSubuser.assigned_task.length}}
             <br/>
             <h3>Total Urgent Tasks</h3>
             {{currentSubuser.urgent_task}}
+            <br/>
+            <h3>Total Tasks Ever Done</h3>
+            <!--{{currentSubuser.urgent_task}}-->
             <br/>
             <h3>Total Money Earned</h3>
             <!--====scope total money earned====-->
@@ -30,19 +30,29 @@
     <section class="main-column">
         <div class="task-box">
         <h2>Task</h2>
-            <div class="taskContainer1" ng-repeat="userTask in userTasks | filter:{userTask:{task_priority: 1}}">
+            <div class="taskContainer" id="task1" ng-repeat="userTask in userTasks | filter:{task_priority: 1}">
+                <h4>{{userTask.task_name}}</h4>
+                <h5>{{userTask.task_money}}</h5>
+                <button class="task-button" ng-click="updatePriority(userTask, newTask.selectedUser)">Start Task</button>
+                <button class="task-button" ng-click="makeUrgent()">Make Urgent</button>
 
             </div>
         </div>
         <div class="task-box">
         <h2>In Progress</h2>
-            <div class="taskContainer2" ng-repeat="userTask in userTasks | filter:{userTask:{task_priority: 2}}">
-
+            <div class="taskContainer" id="task2" ng-repeat="userTask in userTasks | filter:{task_priority: 2}">
+                <h4>{{userTask.task_name}}</h4>
+                <h5>{{userTask.task_money}}</h5>
+                <button class="task-button" ng-click="updatePriority(userTask)">Completed</button>
             </div>
         </div>
         <div class="task-box">
         <h2>Submitted</h2>
-            <div class="taskContainer3" ng-repeat="userTask in userTasks | filter:{userTask:{task_priority: 3}}">
+            <div class="taskContainer" id="task3" ng-repeat="userTask in userTasks | filter:{task_priority: 3}">
+                <h4>{{userTask.task_name}}</h4>
+                <h5>{{userTask.task_money}}</h5>
+                <button class="task-button" ng-click="">Finish Task</button>
+                <button class="task-button" ng-click="updatePriority(userTask)">Redo Task</button>
 
             </div>
         </div>

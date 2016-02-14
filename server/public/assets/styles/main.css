@@ -26,6 +26,7 @@ section{
     float: left;
     margin: 0 1.6%;
 }
+
 .mainForm{
     background-color: #ffe066;
     width: 40%;
@@ -108,4 +109,28 @@ section{
 }
 .article-column-3  input{
     margin: 10px;
+}
+.taskContainer{
+    border: 2px solid #000;
+    float: left;
+    background-color: #FFE066;
+    margin: 10px 13%;
+    width: 80%;
+    border-radius: 5px;
+    text-align: center;
+    height: 140px;
+
+}
+#task1{
+    background-color: #FFE066;
+}
+#task2{
+    background-color: #70c1b3;
+}
+#task3{
+    background-color: #F25F5C;
+}
+.task-button{
+    margin-top: 5px;
+    width: 80%;
 }
