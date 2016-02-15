@@ -68,10 +68,33 @@ router.post('/updateUser', function(request, response){
             if(err) throw err;
             console.log(user);
         });
-        response.send(update);
+        var holder = {
+            update: update,
+            subTaskFind: subTaskFind
+        };
+        response.send(holder);
     });
 
 });
+
+router.post('/deleteTask', function(request, response){
+    User.findOne({'sub_users._id':request.body.scopeData._id}, function(err, update) {
+        var subTaskFind = update.sub_users.id(request.body.scopeData._id);
+        var newSubTaskFind = subTaskFind.assigned_task.id(request.body.userTaskData._id);
+        newSubTaskFind.task_priority = 4;
+        update.save(function(err, user) {
+            if(err) throw err;
+            console.log(user);
+        });
+        var holder = {
+            update: update,
+            subTaskFind: subTaskFind
+        };
+        response.send(holder);
+    });
+
+});
+
 
 router.post('/updateMainUser', function(request, response){
     console.log('request', request.user._id);
@@ -98,17 +121,18 @@ router.post('/createTask', function(request, response){
         if(err) {
             next(err);
         }
-        console.log('server body', request.body.selectedUser);
         var data = request.body.selectedUser;
         User.findOne({'sub_users._id':data._id}, function(err, user){
-            console.log('this is the user', user);
             var subDocFind = user.sub_users.id(data._id);
-            console.log('asldkfja;skdjf', subDocFind.assigned_task);
                 subDocFind.assigned_task.push(task);
                 user.save(function (err) {
                     if (err) throw err;
                 });
-                response.send(user);
+            var holder = {
+                user: user,
+                subDocFind: subDocFind
+            };
+            response.send(holder);
             });
     });
 });
@@ -124,7 +148,7 @@ router.post('/registerAdmin', function(request, response){
         if(err) {
             next(err);
         } else {
-            response.send(user);
+            response.redirect('/');
         }
     });
 });

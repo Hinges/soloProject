@@ -14,17 +14,17 @@
             <h2>User Info:</h2>
             {{currentSubuser.username}}
             <br/>
-            <h3>Total Chores</h3>
+            <h3>Total Chores To Do</h3>
             {{currentSubuser.assigned_task.length}}
             <br/>
-            <h3>Total Urgent Tasks</h3>
-            {{currentSubuser.urgent_task}}
-            <br/>
-            <h3>Total Tasks Ever Done</h3>
+            <!--<h3>Total Urgent Tasks</h3>-->
             <!--{{currentSubuser.urgent_task}}-->
+            <!--<br/>-->
+            <h3>Total Tasks Ever Done</h3>
+            {{doneTask}}
             <br/>
             <h3>Total Money Earned</h3>
-            <!--====scope total money earned====-->
+            {{totalMoneyCollect}}
         </div>
     </section>
     <section class="main-column">
@@ -34,7 +34,7 @@
                 <h4>{{userTask.task_name}}</h4>
                 <h5>{{userTask.task_money}}</h5>
                 <button class="task-button" ng-click="updatePriority(userTask, newTask.selectedUser)">Start Task</button>
-                <button class="task-button" ng-click="makeUrgent()">Make Urgent</button>
+                <!--<button class="task-button" ng-click="makeUrgent(userTask, newTask.selectedUser)">Make Urgent</button>-->
 
             </div>
         </div>
@@ -43,7 +43,7 @@
             <div class="taskContainer" id="task2" ng-repeat="userTask in userTasks | filter:{task_priority: 2}">
                 <h4>{{userTask.task_name}}</h4>
                 <h5>{{userTask.task_money}}</h5>
-                <button class="task-button" ng-click="updatePriority(userTask)">Completed</button>
+                <button class="task-button" ng-click="updatePriority(userTask, newTask.selectedUser)">Completed</button>
             </div>
         </div>
         <div class="task-box">
@@ -51,8 +51,8 @@
             <div class="taskContainer" id="task3" ng-repeat="userTask in userTasks | filter:{task_priority: 3}">
                 <h4>{{userTask.task_name}}</h4>
                 <h5>{{userTask.task_money}}</h5>
-                <button class="task-button" ng-click="">Finish Task</button>
-                <button class="task-button" ng-click="updatePriority(userTask)">Redo Task</button>
+                <button class="task-button" ng-click="deleteTask(userTask, newTask.selectedUser)">Finish Task</button>
+                <button class="task-button" ng-click="updatePriority(userTask, newTask.selectedUser)">Redo Task</button>
 
             </div>
         </div>
