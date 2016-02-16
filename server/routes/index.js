@@ -54,7 +54,6 @@ router.post('/updateUser', function(request, response){
     User.findOne({'sub_users._id':request.body.scopeData._id}, function(err, update) {
         var subTaskFind = update.sub_users.id(request.body.scopeData._id);
         var newSubTaskFind = subTaskFind.assigned_task.id(request.body.userTaskData._id);
-        console.log('this is the newest variable', newSubTaskFind);
         if(newSubTaskFind.task_priority === 1){
             newSubTaskFind.task_priority = 2;
         }
@@ -97,7 +96,6 @@ router.post('/deleteTask', function(request, response){
 
 
 router.post('/updateMainUser', function(request, response){
-    console.log('request', request.user._id);
     User.findOne({'_id':request.user._id}, function(err, update) {
         response.send(update);
         });
@@ -154,8 +152,6 @@ router.post('/registerAdmin', function(request, response){
 });
 
 router.post('/registerUser', function(request, response){
-    console.log('user register hit', request.body);
-    console.log('current user', request.user);
     SubUser.create({
         username: request.body.username,
         password: request.body.password,
@@ -169,15 +165,11 @@ router.post('/registerUser', function(request, response){
         }
         User.findOne({_id:request.user._id}, function(err, user){
 
-            console.log('this is the user', user);
-            console.log('this is the subuser', subuser);
-
-
             user.sub_users.push(subuser);
 
             user.save(function(err) {
                 if(err) throw err;
-            })
+            });
             response.send(user);
 
         });

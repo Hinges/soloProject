@@ -48,8 +48,6 @@ app.controller('adminController', ['$scope', '$http', '$location', function($sco
     $scope.newUser = {};
     $scope.startPage = function() {
         $http.get('/success').then(function (response) {
-            console.log(response);
-            //$scope.userData = response;
             $scope.items = response.data.sub_users;
         });
     };
@@ -94,6 +92,7 @@ app.controller('adminController', ['$scope', '$http', '$location', function($sco
     $scope.createTask = function(){
         $http.post('/createTask', $scope.newTask).then(function(response) {
             $scope.userTasks = response.data.subDocFind.assigned_task;
+            $scope.currentSubuser = response.data.subDocFind;
 
             $scope.newTask.taskName = '';
             $scope.newTask.taskMoney = '';
